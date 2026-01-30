@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RévisionPro - Plateforme intelligente de révision</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+    <!-- Configuration -->
+    <script src="config.js"></script>
+</head>
+<body>
+    <!-- Bannière de statut -->
+    <div class="status-banner" id="status-banner">
+        <div class="container">
+            <span id="status-message">Chargement des fiches de révision...</span>
+        </div>
+    </div>
+
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-container">
+                    <div class="logo-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div>
+                        <h1 class="logo">Révision<span class="logo-highlight">Pro</span></h1>
+                        <p class="tagline">Votre succès commence ici</p>
+                    </div>
+                </div>
+                
+                <div class="header-actions">
+                    <div class="search-filters-container">
+                        <div class="search-wrapper">
+                            <div class="search-bar">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="search-input" placeholder="Rechercher une fiche, un tag, une matière...">
+                                <button class="search-clear" id="search-clear">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <div class="quick-filters">
+                                <button class="quick-filter active" data-filter="all">Toutes</button>
+                                <button class="quick-filter" data-filter="recent">Récentes</button>
+                                <button class="quick-filter" data-filter="favorites">Favorites</button>
+                            </div>
+                        </div>
+                        
+                        <div class="filters-wrapper">
+                            <div class="filter-group">
+                                <select id="matiere-filter" class="styled-select">
+                                    <option value="">Toutes les matières</option>
+                                </select>
+                                <select id="difficulte-filter" class="styled-select">
+                                    <option value="">Toutes difficultés</option>
+                                </select>
+                                <select id="auteur-filter" class="styled-select">
+                                    <option value="">Tous auteurs</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="user-actions">
+                        <button class="btn-icon" id="theme-toggle" title="Changer le thème">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                        <button class="btn-icon" id="stats-btn" title="Statistiques">
+                            <i class="fas fa-chart-bar"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Statistiques rapides -->
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-value" id="total-fiches">0</span>
+                    <span class="stat-label">Fiches</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-value" id="total-matieres">0</span>
+                    <span class="stat-label">Matières</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-value" id="total-auteurs">0</span>
+                    <span class="stat-label">Auteurs</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-tags"></i>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-value" id="total-tags">0</span>
+                    <span class="stat-label">Tags</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-wrapper">
+            <aside class="sidebar">
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">
+                        <i class="fas fa-filter"></i>
+                        Filtres avancés
+                    </h3>
+                    
+                    <div class="filter-section">
+                        <h4>Matières populaires</h4>
+                        <div class="filter-tags" id="matiere-tags"></div>
+                    </div>
+                    
+                    <div class="filter-section">
+                        <h4>Niveau de difficulté</h4>
+                        <div class="difficulty-filters">
+                            <div class="difficulty-filter" data-level="facile">
+                                <span class="difficulty-dot facile"></span>
+                                <span>Facile</span>
+                            </div>
+                            <div class="difficulty-filter" data-level="moyen">
+                                <span class="difficulty-dot moyen"></span>
+                                <span>Moyen</span>
+                            </div>
+                            <div class="difficulty-filter" data-level="difficile">
+                                <span class="difficulty-dot difficile"></span>
+                                <span>Difficile</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-section">
+                        <h4>Tags populaires</h4>
+                        <div class="filter-tags" id="popular-tags"></div>
+                    </div>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">
+                        <i class="fas fa-fire"></i>
+                        Tendances
+                    </h3>
+                    <div class="trending-list" id="trending-list">
+                        <!-- Les fiches tendances seront chargées ici -->
+                    </div>
+                </div>
+                
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">
+                        <i class="fas fa-info-circle"></i>
+                        À propos
+                    </h3>
+                    <div class="about-box">
+                        <p>Plateforme collaborative de fiches de révision créée par des étudiants et enseignants.</p>
+                        <button class="btn-small" id="contribute-btn">
+                            <i class="fas fa-plus"></i> Contribuer
+                        </button>
+                    </div>
+                </div>
+            </aside>
+
+            <section class="main-content">
+                <div class="section-header">
+                    <div>
+                        <h2>Fiches de révision</h2>
+                        <p class="section-subtitle" id="results-count">Chargement...</p>
+                    </div>
+                    <div class="action-buttons">
+                        <div class="sort-options">
+                            <span class="sort-label">Trier par :</span>
+                            <select id="sort-by" class="styled-select">
+                                <option value="date-desc">Date (récent)</option>
+                                <option value="date-asc">Date (ancien)</option>
+                                <option value="titre-asc">Titre (A-Z)</option>
+                                <option value="difficulte-asc">Difficulté</option>
+                                <option value="popularite">Popularité</option>
+                            </select>
+                        </div>
+                        <button class="btn-secondary" id="export-btn">
+                            <i class="fas fa-download"></i> Exporter
+                        </button>
+                    </div>
+                </div>
+
+                <div class="view-options">
+                    <div class="view-toggle">
+                        <button class="view-btn active" data-view="grid">
+                            <i class="fas fa-th"></i>
+                        </button>
+                        <button class="view-btn" data-view="list">
+                            <i class="fas fa-list"></i>
+                        </button>
+                    </div>
+                    <div class="display-options">
+                        <span>Afficher :</span>
+                        <select id="display-count" class="styled-select small">
+                            <option value="12">12 fiches</option>
+                            <option value="24">24 fiches</option>
+                            <option value="48">48 fiches</option>
+                            <option value="all">Toutes</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="fiches-container grid-view" id="fiches-container">
+                    <!-- Les fiches seront chargées dynamiquement ici -->
+                </div>
+
+                <div class="pagination" id="pagination">
+                    <!-- Pagination sera générée ici -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Statistiques Modal -->
+    <div id="stats-modal" class="modal">
+        <div class="modal-content medium">
+            <div class="modal-header">
+                <h2><i class="fas fa-chart-bar"></i> Statistiques</h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="stats-container" id="stats-content">
+                    <!-- Statistiques détaillées -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fiche Modal -->
+    <div id="fiche-modal" class="modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2 id="modal-title"></h2>
+                <div class="modal-actions">
+                    <button class="btn-icon" id="fiche-print">
+                        <i class="fas fa-print"></i>
+                    </button>
+                    <button class="btn-icon" id="fiche-favorite">
+                        <i class="far fa-star"></i>
+                    </button>
+                    <button class="close-btn">&times;</button>
+                </div>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Le contenu de la fiche sera chargé ici -->
+            </div>
+            <div class="modal-footer">
+                <div class="fiche-navigation">
+                    <button class="btn-small" id="prev-fiche">
+                        <i class="fas fa-chevron-left"></i> Précédent
+                    </button>
+                    <span class="fiche-counter" id="fiche-counter"></span>
+                    <button class="btn-small" id="next-fiche">
+                        Suivant <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer amélioré -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-graduation-cap"></i>
+                        <h3>Révision<span>Pro</span></h3>
+                    </div>
+                    <p class="footer-description">
+                        Plateforme collaborative de révision créée par et pour les apprenants.
+                        Partagez vos connaissances et améliorez vos compétences.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-discord"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Ressources</h4>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-book"></i> Documentation</a></li>
+                        <li><a href="#"><i class="fas fa-video"></i> Tutoriels</a></li>
+                        <li><a href="#"><i class="fas fa-file-download"></i> Modèles</a></li>
+                        <li><a href="#"><i class="fas fa-tools"></i> Outils</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Communauté</h4>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-users"></i> Forum</a></li>
+                        <li><a href="#"><i class="fas fa-handshake"></i> Contribuer</a></li>
+                        <li><a href="#"><i class="fas fa-award"></i> Classement</a></li>
+                        <li><a href="#"><i class="fas fa-calendar-alt"></i> Événements</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul class="footer-links">
+                        <li><a href="#"><i class="fas fa-headset"></i> Service client</a></li>
+                        <li><a href="#"><i class="fas fa-question-circle"></i> FAQ</a></li>
+                        <li><a href="#"><i class="fas fa-bug"></i> Signaler un bug</a></li>
+                        <li><a href="#"><i class="fas fa-lightbulb"></i> Suggestions</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="footer-info">
+                    <p>&copy; 2023 RévisionPro. Tous droits réservés.</p>
+                    <p>Version <span id="version-number">2.0</span></p>
+                </div>
+                <div class="footer-legal">
+                    <a href="#">Politique de confidentialité</a>
+                    <a href="#">Conditions d'utilisation</a>
+                    <a href="#">Mentions légales</a>
+                    <a href="#">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Erreur Toast -->
+    <div id="error-toast" class="toast">
+        <div class="toast-content">
+            <i class="fas fa-exclamation-circle"></i>
+            <span id="toast-message"></span>
+        </div>
+        <button class="toast-close">&times;</button>
+    </div>
+
+    <!-- Chargement des données externes -->
+    <script>
+        // Fonction pour charger dynamiquement un script
+        function loadExternalScript(url, callback) {
+            const script = document.createElement('script');
+            script.src = url;
+            script.onload = callback;
+            script.onerror = function() {
+                console.error('Erreur de chargement:', url);
+                if (callback) callback(new Error(`Impossible de charger ${url}`));
+            };
+            document.head.appendChild(script);
+        }
+
+        // Charger les données externes
+        loadExternalScript(CONFIG.dataUrl, function(error) {
+            if (error) {
+                console.error('Erreur de chargement des données:', error);
+                document.getElementById('status-message').textContent = 
+                    'Erreur de chargement des données. Utilisation des données par défaut.';
+                document.getElementById('status-banner').className = 'status-banner error';
+                
+                // Charger script.js qui gérera le mode dégradé
+                loadExternalScript('script.js', function() {
+                    console.log('Mode dégradé activé');
+                });
+            } else {
+                // Données chargées avec succès, charger le script principal
+                loadExternalScript('script.js', function() {
+                    console.log('Application chargée avec succès');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
