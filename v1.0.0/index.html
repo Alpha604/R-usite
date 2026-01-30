@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Révision Pro - Plateforme de révision de cours</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo-container">
+                <h1 class="logo">Révision<span class="logo-highlight">Pro</span></h1>
+                <p class="tagline">Votre plateforme de révision intelligente</p>
+            </div>
+            <div class="search-container">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="search-input" placeholder="Rechercher une fiche...">
+                </div>
+                <div class="filters">
+                    <select id="matiere-filter">
+                        <option value="">Toutes les matières</option>
+                    </select>
+                    <select id="difficulte-filter">
+                        <option value="">Toutes les difficultés</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <div class="hero-content">
+                <h2>Réviser efficacement n'a jamais été aussi simple</h2>
+                <p>Cette plateforme vous permet de créer, organiser et réviser vos fiches de cours avec des outils adaptés à votre apprentissage.</p>
+                <div class="features">
+                    <div class="feature">
+                        <i class="fas fa-book"></i>
+                        <span>Fiches structurées</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-tags"></i>
+                        <span>Organisation par tags</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>Exercices interactifs</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="content-wrapper">
+            <aside class="sidebar">
+                <h3>Filtres</h3>
+                <div class="filter-section">
+                    <h4>Matières</h4>
+                    <div class="filter-tags" id="matiere-tags"></div>
+                </div>
+                <div class="filter-section">
+                    <h4>Difficulté</h4>
+                    <div class="filter-tags" id="difficulte-tags"></div>
+                </div>
+                <div class="filter-section">
+                    <h4>Tags populaires</h4>
+                    <div class="filter-tags" id="popular-tags"></div>
+                </div>
+                <div class="stats">
+                    <h4>Statistiques</h4>
+                    <p><span id="fiche-count">0</span> fiches disponibles</p>
+                    <p><span id="matiere-count">0</span> matières</p>
+                </div>
+            </aside>
+
+            <section class="fiches-section">
+                <div class="section-header">
+                    <h2>Fiches de révision</h2>
+                    <div class="sort-options">
+                        <span>Trier par :</span>
+                        <select id="sort-by">
+                            <option value="date-desc">Date (récent)</option>
+                            <option value="date-asc">Date (ancien)</option>
+                            <option value="titre-asc">Titre (A-Z)</option>
+                            <option value="difficulte-asc">Difficulté (facile à dur)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="fiches-container" id="fiches-container">
+                    <!-- Les fiches seront chargées dynamiquement ici -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2023 RévisionPro - Plateforme de révision de cours</p>
+            <p>Créé pour faciliter l'apprentissage et la révision</p>
+        </div>
+    </footer>
+
+    <div id="fiche-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title"></h2>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Le contenu de la fiche sera chargé ici -->
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="data.js"></script>
+</body>
+</html>
